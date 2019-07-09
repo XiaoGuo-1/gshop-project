@@ -20,3 +20,32 @@ export const reqShops = ({longitude,latitude}) => ajax({
   url:BASE + '/shops',
   params:{latitude,longitude}
 })
+
+//发送短信验证码
+export const reqSendCode = (phone) => ajax({
+  method:'GET',
+  url:BASE + '/sendcode',
+  params:{ phone }
+})
+
+ 
+//用户名密码登录                建议以对象方式写
+export const reqPwdLogin = ({ name,pwd,captcha }) => ajax({
+  method:'POST',
+  url:BASE + '/login_pwd',
+  data:{
+    name,
+    pwd,
+    captcha,
+  }
+})
+
+//手机号/短信登录
+export const reqSmsLogin = (phone,code) => ajax({
+  method:'POST',
+  url:BASE + 'login_sms',
+  data:{
+    phone,
+    code
+  }
+})

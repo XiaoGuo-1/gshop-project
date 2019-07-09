@@ -1,7 +1,7 @@
 /*
 包含n个用于直接修改状态数据的方法的对象
 */
-
+import Cookies from "js-cookie";
 import{
   reqAddress,
   reqCategorys,
@@ -11,7 +11,10 @@ import{
 import {
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORYS,
-  RECEIVE_SHOPS
+  RECEIVE_SHOPS,
+  RECEIVE_USER,
+  RESET_USER,
+
 } from "./mutation-types"
 
 export default{
@@ -32,7 +35,7 @@ export default{
     /*
     获取分类列表的异步action
   */
-  async getCategorys({commit}){
+  async getCategorys({commit},callback){
 
     //发异步ajax请求
     const result = await reqCategorys()
@@ -40,6 +43,9 @@ export default{
     if (result.code===0) {
       const categorys = result.data
       commit(RECEIVE_CATEGORYS,categorys)
+
+      //更新状态数据后执行回调函数
+      typeof callback === 'function' && callback()
     }
   },
 
@@ -56,5 +62,25 @@ export default{
       const shops = result.data
       commit(RECEIVE_SHOPS,shops)
     }
+  },
+
+  /* 
+    记录user：
+  */
+  recordUser({commit},user){
+    localStorage.setItem('token_key',user.token)
+    commit(RECEIVE_USER,{user})
+  },
+
+  /* 
+    退出登录  
+  */
+  logout({commit}){
+    //重置状态中的user
+      commit(RESET_USER)
+    //清除local中保存的token
+      localStorage.removeItem('token_key')
+    //清除cookie中的user_id
+    Cookies.remove('user_id')
   }
 }

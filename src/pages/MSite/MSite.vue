@@ -32,7 +32,7 @@
         </div>
       </nav>
       <!--首页附近商家-->
-      <ShopList/>
+      <ShopList/>>
     </section>
   </div>
 </template>
@@ -75,20 +75,38 @@ export default {
       //返回结果
       return bigArr
 
-      const obj = {}
-      const arr = {}
-      arr.push(obj)
-      arr.push(obj)
-      arr.push(obj)
+
     }
   },
 
   //创建对象的时机：在列表显示之后
-  mounted (){
+  async mounted (){
     this.$store.dispatch("getShops")
-    this.$store.dispatch("getCategorys")
 
-    setTimeout(() => {
+    /* this.$store.dispatch("getCategorys",() => {
+      this.$nextTick(() => {
+        new Swiper ('.swiper-container', {
+          //direction: 'vertical', // 垂直切换选项
+          loop: true, // 循环模式选项
+          // 如需分页器
+          pagination: {
+            el: '.swiper-pagination',
+          },
+        })
+      })
+    }) */
+
+    await this.$store.dispatch("getCategorys")
+    new Swiper ('.swiper-container', {
+      //direction: 'vertical', // 垂直切换选项
+      loop: true, // 循环模式选项
+      // 如需分页器
+      pagination: {
+        el: '.swiper-pagination',
+      },
+    })
+
+    /* setTimeout(() => {
       var mySwiper = new Swiper ('.swiper-container', {
         //direction: 'vertical', // 垂直切换选项
         loop: true, // 循环模式选项
@@ -97,9 +115,25 @@ export default {
           el: '.swiper-pagination',
         },
       })
-    },1000);
+    },1000); */
   },
 
+  /* watch:{
+    // 更新状态数据 ==> 立即同步调用监视的回调函数 ==> 异步更新界面
+    categorys(){
+
+      this.$nextTick(() => {
+        new Swiper ('.swiper-container', {
+          //direction: 'vertical', // 垂直切换选项
+          loop: true, // 循环模式选项
+          // 如需分页器
+          pagination: {
+            el: '.swiper-pagination',
+          },
+        })
+      })
+    }
+  }, */
   components:{
     ShopList
   }
